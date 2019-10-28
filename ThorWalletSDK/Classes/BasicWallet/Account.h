@@ -89,6 +89,7 @@
 
 @property (nonatomic, readonly) NSData *mnemonicData;
 @property (nonatomic, copy)NSString *keystore;
+@property (nonatomic, copy)NSString *publicKey;
 
 - (Signature*)signDigest: (NSData*)digestData;
 - (void)sign: (Transaction*)transaction;

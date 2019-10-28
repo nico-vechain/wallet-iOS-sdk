@@ -32,6 +32,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WalletTransactionParameter.h"
+#import "Transaction.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -47,6 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
             keystore:(NSString *)keystore
             password:(NSString *)password
             callback:(void(^)(NSString *txId))callback;
+
++ (void)prepareClause: (WalletTransactionParameter *)paramModel
+    callback:(void(^)(Transaction *tr))callback;
 
 @end
 

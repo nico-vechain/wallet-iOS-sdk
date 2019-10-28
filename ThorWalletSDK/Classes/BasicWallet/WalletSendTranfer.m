@@ -104,6 +104,48 @@
         [self sign:transaction paramModel:paramModel keystore:keystore password:password callback:callback isSend:isSend];
     }    
 }
++ (void)prepareClause: (WalletTransactionParameter *)paramModel
+callback:(void(^)(Transaction *tr))callback
+{
+    
+    Transaction *transaction = [[Transaction alloc] init];
+
+    NSString *decimalNoce = [BigNumber bigNumberWithHexString:paramModel.nonce].decimalString;
+    transaction.nonce = decimalNoce.integerValue;
+
+    transaction.Expiration = paramModel.expiration.integerValue;
+    transaction.gasPrice  = [BigNumber bigNumberWithInteger:paramModel.gasPriceCoef.integerValue];
+    
+    if (paramModel.dependsOn.length == 0 || paramModel.dependsOn == nil) {
+            transaction.dependsOn = [NSData data];
+    }else{
+        transaction.dependsOn = [SecureData hexStringToData:paramModel.dependsOn];
+    }
+
+    transaction.ChainTag = [BigNumber bigNumberWithHexString:paramModel.chainTag];
+
+    transaction.BlockRef = [BigNumber bigNumberWithHexString:paramModel.blockRef];
+
+    [self packageClausesData:transaction paramModel:paramModel];
+
+    if (paramModel.gas == nil || paramModel.gas.integerValue == 0) {
+        
+        NSString *strClause = [paramModel.clauses yy_modelToJSONString];
+        NSArray *clauseList = (NSArray *)[NSJSONSerialization dictionaryWithJsonString:strClause];
+        [WalletDAppGasCalculateHandle simulateGas:clauseList
+                                           from:paramModel.address
+                                          block:^(NSString * _Nonnull gas)
+         {
+             transaction.gasLimit = [BigNumber bigNumberWithInteger:gas.integerValue];
+            callback(transaction);
+        }];
+        
+    }else{
+        transaction.gasLimit = [BigNumber bigNumberWithInteger:paramModel.gas.integerValue];
+        callback(transaction);
+    }
+    
+}
 
 //Organize the clause data
 + (void)packageClausesData:(Transaction *)transaction

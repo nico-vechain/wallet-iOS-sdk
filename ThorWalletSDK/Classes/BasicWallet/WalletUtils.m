@@ -564,5 +564,10 @@
    return  [WalletTools packageCertParam:newMessage];
 }
 
++(void)prepareClauseData:(WalletTransactionParameter *)parameter
+               signBlock:(void(^)(Transaction *tr))signBlock
+{
+    [WalletSendTranfer prepareClause:parameter callback:signBlock];
+}
 
 @end
