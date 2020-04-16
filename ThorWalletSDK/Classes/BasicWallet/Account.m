@@ -169,14 +169,6 @@ static NSDateFormatter *TimeFormatter = nil;
         ecdsa_get_public_key65(&secp256k1, _privateKey.bytes, publicKey.mutableBytes);
         NSData *addressData = [[[publicKey subdataFromIndex:1] KECCAK256] subdataFromIndex:12].data;
         _address = [Address addressWithData:addressData];
-        _publicKey = [publicKey hexString];
-    
-        const char* mnemonic = mnemonic_from_data(privateKey.bytes, 32);
-        NSString *mne = [[NSString alloc] initWithCString:mnemonic encoding:NSUTF8StringEncoding];
-        if (_mnemonicPhrase.length <= 0) {
-            _mnemonicPhrase = mne;
-        }
-        
     }
     return self;
 }

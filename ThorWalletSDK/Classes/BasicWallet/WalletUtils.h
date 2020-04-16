@@ -40,7 +40,6 @@
 #import "WalletSDKMacro.h"
 #import "SecureData.h"
 #import "WalletDAppHandle.h"
-#import "Transaction.h"
 
 
 @interface WalletUtils : NSObject
@@ -265,6 +264,4 @@
 
 
 
-+(void)prepareClauseData:(WalletTransactionParameter *)parameter
-               signBlock:(void(^)(Transaction *tr))signBlock;
 @end

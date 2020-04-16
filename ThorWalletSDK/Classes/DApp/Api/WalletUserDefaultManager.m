@@ -42,7 +42,7 @@
     // If block host is not set, the default is the official environment.
     NSString *blockUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"wallerSDK_BlockUrl"];
     if (blockUrl.length == 0 || blockUrl == nil) {
-        return Test_Node;
+        return Main_Node;
     }else{
         return [[NSUserDefaults standardUserDefaults] objectForKey:@"wallerSDK_BlockUrl"];
     }
